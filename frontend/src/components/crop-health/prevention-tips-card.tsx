@@ -1,0 +1,104 @@
+import { StyleSheet, Text, View } from 'react-native';
+
+import { SectionCard } from '@/components/ui/section-card';
+import { AgriRadius, AgriTypography } from '@/constants/agri-theme';
+import { Spacing } from '@/constants/theme';
+import { useAgriTheme } from '@/hooks/use-agri-theme';
+import { PREVENTION_TIPS } from '@/models/crop-health';
+
+/**
+ * 💡 General Prevention Tips.
+ *
+ * Eight habits rather than eight rules. Each one is numbered so the order can be
+ * remembered, and each is written so it holds on any crop and any soil, which is
+ * why none of them names a product or an amount.
+ *
+ * The closing line is the point of the whole list: this is the part of pest and
+ * disease control that costs nothing and works every season.
+ */
+export function PreventionTipsCard() {
+  const colors = useAgriTheme();
+
+  return (
+    <SectionCard
+      title={'\u{1F4A1} General Prevention Tips'}
+      subtitle="Habits that hold on any crop, in the order worth doing them"
+      testID="crop-health-prevention-tips">
+      <View style={styles.list}>
+        {PREVENTION_TIPS.map((tip, index) => (
+          <View
+            key={tip.id}
+            style={[
+              styles.row,
+              // A hairline between rows, but not above the first one.
+              index > 0 && { borderTopColor: colors.border, borderTopWidth: 1 },
+            ]}>
+            <View style={[styles.number, { backgroundColor: colors.primarySoft }]}>
+              <Text style={[styles.numberText, { color: colors.primaryDark }]}>{index + 1}</Text>
+            </View>
+
+            <View style={styles.copy}>
+              <Text style={[styles.title, { color: colors.text }]}>{tip.title}</Text>
+              <Text style={[styles.detail, { color: colors.textSecondary }]}>{tip.detail}</Text>
+            </View>
+          </View>
+        ))}
+
+        <View
+          style={[styles.footnote, { backgroundColor: colors.primarySoft, borderColor: colors.border }]}>
+          <Text style={[styles.footnoteText, { color: colors.primaryDark }]}>
+            None of these needs a purchase. This is the part of pest and disease control that
+            costs nothing, works in every season, and works on every crop on this page.
+          </Text>
+        </View>
+      </View>
+    </SectionCard>
+  );
+}
+
+const styles = StyleSheet.create({
+  list: {
+    gap: 0,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: Spacing.three,
+    paddingVertical: Spacing.three,
+  },
+  number: {
+    width: 28,
+    height: 28,
+    borderRadius: AgriRadius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  numberText: {
+    ...AgriTypography.caption,
+    fontWeight: '700',
+  },
+  copy: {
+    flex: 1,
+    gap: 2,
+  },
+  title: {
+    ...AgriTypography.label,
+  },
+  detail: {
+    ...AgriTypography.caption,
+    fontWeight: '400',
+    lineHeight: 21,
+  },
+  footnote: {
+    borderWidth: 1,
+    borderRadius: AgriRadius.medium,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginTop: Spacing.two,
+  },
+  footnoteText: {
+    ...AgriTypography.caption,
+    fontWeight: '400',
+    lineHeight: 21,
+  },
+});
